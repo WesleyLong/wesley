@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.easycodedemo.dao.CaPriceDangerWarningDao">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.easycodedemo.entity.CaPriceDangerWarning">
+        <!--@Table ca_price_danger_warning-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="warningDate" column="warning_date" jdbcType="TIMESTAMP"/>
+        <result property="warningProduct" column="warning_product" jdbcType="VARCHAR"/>
+        <result property="warningLevel" column="warning_level" jdbcType="INTEGER"/>
+        <result property="warningReason" column="warning_reason" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, warning_date, warning_product, warning_level, warning_reason, delete_flag
+        from ca_price_danger_warning
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, warning_date, warning_product, warning_level, warning_reason, delete_flag
+        from ca_price_danger_warning
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="warningDate != null">
+                and warning_date = #{warningDate}
+            </if>
+            <if test="warningProduct != null and warningProduct != ''">
+                and warning_product = #{warningProduct}
+            </if>
+            <if test="warningLevel != null">
+                and warning_level = #{warningLevel}
+            </if>
+            <if test="warningReason != null and warningReason != ''">
+                and warning_reason = #{warningReason}
+            </if>
+            <if test="deleteFlag != null">
+                and delete_flag = #{deleteFlag}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, warning_date, warning_product, warning_level, warning_reason, delete_flag
+        from ca_price_danger_warning
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="warningDate != null">
+                and warning_date = #{warningDate}
+            </if>
+            <if test="warningProduct != null and warningProduct != ''">
+                and warning_product = #{warningProduct}
+            </if>
+            <if test="warningLevel != null">
+                and warning_level = #{warningLevel}
+            </if>
+            <if test="warningReason != null and warningReason != ''">
+                and warning_reason = #{warningReason}
+            </if>
+            <if test="deleteFlag != null">
+                and delete_flag = #{deleteFlag}
+            </if>
+        </where>
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from ca_price_danger_warning
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="warningDate != null">
+                and warning_date = #{warningDate}
+            </if>
+            <if test="warningProduct != null and warningProduct != ''">
+                and warning_product = #{warningProduct}
+            </if>
+            <if test="warningLevel != null">
+                and warning_level = #{warningLevel}
+            </if>
+            <if test="warningReason != null and warningReason != ''">
+                and warning_reason = #{warningReason}
+            </if>
+            <if test="deleteFlag != null">
+                and delete_flag = #{deleteFlag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into ca_price_danger_warning(warning_date, warning_product, warning_level, warning_reason, delete_flag)
+        values (#{warningDate}, #{warningProduct}, #{warningLevel}, #{warningReason}, #{deleteFlag})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ca_price_danger_warning(warning_date, warning_product, warning_level, warning_reason, delete_flag)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.warningDate}, #{entity.warningProduct}, #{entity.warningLevel}, #{entity.warningReason}, #{entity.deleteFlag})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ca_price_danger_warning(warning_date, warning_product, warning_level, warning_reason, delete_flag)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.warningDate}, #{entity.warningProduct}, #{entity.warningLevel}, #{entity.warningReason}, #{entity.deleteFlag})
+        </foreach>
+        on duplicate key update
+        warning_date = values(warning_date),
+        warning_product = values(warning_product),
+        warning_level = values(warning_level),
+        warning_reason = values(warning_reason),
+        delete_flag = values(delete_flag)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ca_price_danger_warning
+        <set>
+            <if test="warningDate != null">
+                warning_date = #{warningDate},
+            </if>
+            <if test="warningProduct != null and warningProduct != ''">
+                warning_product = #{warningProduct},
+            </if>
+            <if test="warningLevel != null">
+                warning_level = #{warningLevel},
+            </if>
+            <if test="warningReason != null and warningReason != ''">
+                warning_reason = #{warningReason},
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ca_price_danger_warning where id = #{id}
+    </delete>
+
+</mapper>
+
